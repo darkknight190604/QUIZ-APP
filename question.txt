@@ -1,0 +1,21 @@
+Create a simple quiz app
+the user will see a question and 4 options.
+
+clicking on an answer
+
+--highlight that answer
+--show weather the answer is correct or not
+
+Add a button named next question which will:-
+--Enable us to get a new question
+--Reset the options to new options 
+
+
+The question you will take will be a variable whose structure will be :
+
+let question ={Q1,Q2,Q3.....}
+Q's will be object composed of :
+{
+    question: String
+    options:[array where evry array will be an object having an option and a boolean value showing that option is true or false]
+}

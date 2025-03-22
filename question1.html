@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<head>
+    <title>Quiz App</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel=" stylesheet" href="style.css">
+</head>
+
+<body>
+    <h2>QUIZ APP</h2>
+    <div class="container">
+        <p id="progress"></p>
+        <p id="timer"></p>
+        <p class="question"></p>
+        <ul class="options"></ul>
+        <p class="feedback"></p>
+        <img id="meme" class="meme" src="" alt="" style="display: none;">
+    </div>
+    <audio id="correct-sound" src="correct.mp3"></audio>
+    <audio id="wrong-sound" src="wrong.mp3"></audio>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const questionData = [
+    {
+        question: "What is the capital of India?",
+        options: [
+            { option: "New Delhi", isCorrect: true },
+            { option: "Mumbai", isCorrect: false },
+            { option: "Kolkata", isCorrect: false },
+            { option: "Chennai", isCorrect: false },
+        ],
+    },
+    {
+        question: "Who is the Prime Minister of India?",
+        options: [
+            { option: "Shri Narendra Damodar Das Modi", isCorrect: true },
+            { option: "Shri Naveen Pattnaik", isCorrect: false },
+            { option: "Shri Dharmendra Pradhan", isCorrect: false },
+            { option: "Shri Amit Shah", isCorrect: false },
+        ],
+    },
+    {
+        question: "What is the capital of Odisha?",
+        options: [
+            { option: "Bhubaneswar", isCorrect: true },
+            { option: "Cuttack", isCorrect: false },
+            { option: "Puri", isCorrect: false },
+            { option: "Rourkela", isCorrect: false },
+        ],
+    },
+    {
+        question: "What is the capital of Australia?",
+        options: [
+            { option: "Canberra", isCorrect: true },
+            { option: "Sydney", isCorrect: false },
+            { option: "Melbourne", isCorrect: false },
+            { option: "Perth", isCorrect: false },
+        ],
+    },
+    {
+        question: "Which planet is known as the Red Planet?",
+        options: [
+            { option: "Mars", isCorrect: true },
+            { option: "Venus", isCorrect: false },
+            { option: "Jupiter", isCorrect: false },
+            { option: "Saturn", isCorrect: false },
+        ],
+    },
+    {
+        question: "What is the smallest prime number?",
+        options: [
+            { option: "2", isCorrect: true },
+            { option: "1", isCorrect: false },
+            { option: "3", isCorrect: false },
+            { option: "5", isCorrect: false },
+        ],
+    },
+    {
+        question: "Which ocean is the largest?",
+        options: [
+            { option: "Pacific Ocean", isCorrect: true },
+            { option: "Atlantic Ocean", isCorrect: false },
+            { option: "Indian Ocean", isCorrect: false },
+            { option: "Arctic Ocean", isCorrect: false },
+        ],
+    },
+    {
+        question: "Who wrote the Harry Potter series?",
+        options: [
+            { option: "J.K. Rowling", isCorrect: true },
+            { option: "George R.R. Martin", isCorrect: false },
+            { option: "J.R.R. Tolkien", isCorrect: false },
+            { option: "C.S. Lewis", isCorrect: false },
+        ],
+    },
+    {
+        question: "What is the square root of 81?",
+        options: [
+            { option: "9", isCorrect: true },
+            { option: "8", isCorrect: false },
+            { option: "7", isCorrect: false },
+            { option: "6", isCorrect: false },
+        ],
+    },
+    {
+        question: "Which gas do plants absorb from the atmosphere during photosynthesis?",
+        options: [
+            { option: "Carbon Dioxide", isCorrect: true },
+            { option: "Oxygen", isCorrect: false },
+            { option: "Nitrogen", isCorrect: false },
+            { option: "Hydrogen", isCorrect: false },
+        ],
+    },
+    {
+        question: "Who painted the Mona Lisa?",
+        options: [
+            { option: "Leonardo da Vinci", isCorrect: true },
+            { option: "Vincent van Gogh", isCorrect: false },
+            { option: "Pablo Picasso", isCorrect: false },
+            { option: "Claude Monet", isCorrect: false },
+        ],
+    },
+    {
+        question: "Which is the longest river in the world?",
+        options: [
+            { option: "Nile", isCorrect: true },
+            { option: "Amazon", isCorrect: false },
+            { option: "Yangtze", isCorrect: false },
+            { option: "Mississippi", isCorrect: false },
+        ],
+    },
+    {
+        question: "What is the boiling point of water at sea level in Celsius?",
+        options: [
+            { option: "100°C", isCorrect: true },
+            { option: "0°C", isCorrect: false },
+            { option: "50°C", isCorrect: false },
+            { option: "75°C", isCorrect: false },
+        ],
+    },
+    {
+        question: "Which is the largest mammal in the world?",
+        options: [
+            { option: "Blue Whale", isCorrect: true },
+            { option: "Elephant", isCorrect: false },
+            { option: "Giraffe", isCorrect: false },
+            { option: "Hippopotamus", isCorrect: false },
+        ],
+    },
+    {
+        question: "What is the capital of Japan?",
+        options: [
+            { option: "Tokyo", isCorrect: true },
+            { option: "Osaka", isCorrect: false },
+            { option: "Kyoto", isCorrect: false },
+            { option: "Hiroshima", isCorrect: false },
+        ],
+    },
+    {
+        question: "Who discovered gravity?",
+        options: [
+            { option: "Isaac Newton", isCorrect: true },
+            { option: "Albert Einstein", isCorrect: false },
+            { option: "Galileo Galilei", isCorrect: false },
+            { option: "Nicolaus Copernicus", isCorrect: false },
+        ],
+    },
+    {
+        question: "What does DNA stand for?",
+        options: [
+            { option: "Deoxyribonucleic Acid", isCorrect: true },
+            { option: "Dinucleic Acid", isCorrect: false },
+            { option: "Ribonucleic Acid", isCorrect: false },
+            { option: "Deoxynucleic Acid", isCorrect: false },
+        ],
+    },
+    {
+        question: "What is the largest desert in the world?",
+        options: [
+            { option: "Sahara", isCorrect: true },
+            { option: "Gobi", isCorrect: false },
+            { option: "Arctic", isCorrect: false },
+            { option: "Kalahari", isCorrect: false },
+        ],
+    },
+    {
+        question: "What is the chemical symbol for gold?",
+        options: [
+            { option: "Au", isCorrect: true },
+            { option: "Ag", isCorrect: false },
+            { option: "Fe", isCorrect: false },
+            { option: "Pt", isCorrect: false },
+        ],
+    },
+    {
+        question: "Who is known as the Father of Computers?",
+        options: [
+            { option: "Charles Babbage", isCorrect: true },
+            { option: "Alan Turing", isCorrect: false },
+            { option: "John von Neumann", isCorrect: false },
+            { option: "Ada Lovelace", isCorrect: false },
+        ],
+    },
+];
+    
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let timerInterval;
+    
+            function startTimer(duration) {
+                const timerElement = document.getElementById("timer");
+                let timeRemaining = duration;
+    
+                timerElement.textContent = `Time Left: ${timeRemaining}s`;
+    
+                timerInterval = setInterval(() => {
+                    timeRemaining--;
+                    timerElement.textContent = `Time Left: ${timeRemaining}s`;
+    
+                    if (timeRemaining <= 0) {
+                        clearInterval(timerInterval);
+                        const feedbackElement = document.querySelector(".feedback");
+                        feedbackElement.textContent = "Time's up! Moving to the next question...";
+                        setTimeout(() => {
+                            currentQuestionIndex++;
+                            if (currentQuestionIndex < questionData.length) {
+                                loadQuestion(currentQuestionIndex);
+                            } else {
+                                showFinalScore();
+                            }
+                        }, 2000);
+                    }
+                }, 1000);
+            }
+    
+            function loadQuestion(questionIndex) {
+                clearInterval(timerInterval);
+                startTimer(15);
+    
+                const q = questionData[questionIndex];
+                document.querySelector(".question").textContent = q.question;
+                document.getElementById("progress").textContent = `Question ${questionIndex + 1} of ${questionData.length}`;
+    
+                const optionsElement = document.querySelector(".options");
+                optionsElement.innerHTML = "";
+    
+                // Shuffle options randomly
+                const shuffledOptions = q.options.sort(() => Math.random() - 0.5);
+    
+                shuffledOptions.forEach((option) => {
+                    const li = document.createElement("li");
+                    li.textContent = option.option;
+                    li.classList.add("option");
+                    li.dataset.isCorrect = option.isCorrect;
+                    li.onclick = checkAnswer;
+                    optionsElement.appendChild(li);
+                });
+    
+                document.querySelector(".feedback").textContent = "";
+                document.getElementById("meme").style.display = "none";
+            }
+    
+            function checkAnswer(event) {
+                clearInterval(timerInterval);
+                const selectedOption = event.target;
+                const isCorrect = selectedOption.dataset.isCorrect === "true";
+                const correctAnswer = questionData[currentQuestionIndex].options.find(opt => opt.isCorrect).option;
+                const feedbackElement = document.querySelector(".feedback");
+                const memeElement = document.getElementById("meme");
+    
+                if (isCorrect) {
+                    score++;
+                    feedbackElement.textContent = "🎉 Correct! Moving to the next question...";
+                    selectedOption.style.backgroundColor = "green";
+                    memeElement.src = "right answer.gif";
+                    document.getElementById("correct-sound").play();
+                } else {
+                    feedbackElement.textContent = `❌ Wrong! The correct answer was: ${correctAnswer}.`;
+                    selectedOption.style.backgroundColor = "red";
+                    memeElement.src = "wrong answer.gif";
+                    document.getElementById("wrong-sound").play();
+    
+                    const correctOption = Array.from(document.querySelectorAll(".option")).find(
+                        (option) => option.dataset.isCorrect === "true"
+                    );
+                    correctOption.style.backgroundColor = "green";
+                }
+    
+                memeElement.style.display = "block";
+    
+                const options = document.querySelectorAll(".option");
+                options.forEach((option) => {
+                    option.onclick = null;
+                });
+    
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    if (currentQuestionIndex < questionData.length) {
+                        loadQuestion(currentQuestionIndex);
+                    } else {
+                        showFinalScore();
+                    }
+                }, 4000);
+            }
+    
+            function showFinalScore() {
+                const container = document.querySelector(".container");
+                container.innerHTML = `
+                    <h2>Quiz Completed!</h2>
+                    <p>Your Score: ${score} / ${questionData.length}</p>
+                    <img src="final-meme.gif" alt="Final Meme" class="meme">
+                    <button onclick="restartQuiz()">Restart Quiz</button>
+                `;
+            }
+    
+            function restartQuiz() {
+                currentQuestionIndex = 0;
+                score = 0;
+                loadQuestion(currentQuestionIndex);
+            }
+    
+            loadQuestion(currentQuestionIndex);
+        });
+    </script>
+</body>
+
+</html>
